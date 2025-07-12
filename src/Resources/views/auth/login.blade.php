@@ -12,7 +12,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{ url('artisan-playground/assets/css/app.css') }}" rel="stylesheet">
+    <link href="@artisanPlaygroundAsset('css/app.css')" rel="stylesheet">
 </head>
 <body class="login-page">
     <!-- Theme Toggle -->
@@ -130,7 +130,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Artisan Playground JS -->
-    <script src="{{ url('artisan-playground/assets/js/app.js') }}"></script>
+    <script src="@artisanPlaygroundAsset('js/app.js')"></script>
 </body>
 </html> 
 </html> 

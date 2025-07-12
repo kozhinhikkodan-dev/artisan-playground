@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Http\Response;
 use KozhinhikkodanDev\ArtisanPlayground\Middleware\ArtisanPlaygroundMiddleware;
 use KozhinhikkodanDev\ArtisanPlayground\Models\ArtisanCommand;
@@ -47,6 +48,7 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->registerCommands();
         $this->registerAssetRoutes();
+        $this->registerBladeDirectives();
     }
 
     /**
@@ -99,17 +101,42 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
         })->where('type', 'css|js')->where('file', '.*');
     }
 
-    /**
+        /**
      * Get MIME type for file.
      */
     protected function getMimeType(string $file): string
     {
         $extension = pathinfo($file, PATHINFO_EXTENSION);
-
+        
         return match ($extension) {
             'css' => 'text/css',
             'js' => 'application/javascript',
             default => 'text/plain',
         };
+    }
+
+    /**
+     * Register Blade directives.
+     */
+    protected function registerBladeDirectives(): void
+    {
+        Blade::directive('artisanPlaygroundAsset', function ($expression) {
+            return "<?php echo \KozhinhikkodanDev\ArtisanPlayground\Providers\ArtisanPlaygroundServiceProvider::getAssetUrl($expression); ?>";
+        });
+    }
+
+    /**
+     * Get asset URL with fallback.
+     */
+    public static function getAssetUrl(string $path): string
+    {
+        $publicPath = public_path("vendor/artisan-playground/{$path}");
+        $packagePath = __DIR__ . "/../resources/{$path}";
+        
+        if (file_exists($publicPath)) {
+            return asset("vendor/artisan-playground/{$path}");
+        }
+        
+        return url("artisan-playground/assets/{$path}");
     }
 }
