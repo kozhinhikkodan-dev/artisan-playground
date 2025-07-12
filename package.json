@@ -1,0 +1,28 @@
+{
+    "name": "artisan-playground",
+    "version": "1.0.0",
+    "description": "A beautiful UI for executing Laravel Artisan commands",
+    "private": true,
+    "scripts": {
+        "dev": "echo 'No build process required - this is a Laravel package'",
+        "build": "echo 'No build process required - this is a Laravel package'",
+        "test": "echo 'Run tests with: composer test'"
+    },
+    "keywords": [
+        "laravel",
+        "artisan",
+        "commands",
+        "ui",
+        "dashboard"
+    ],
+    "author": "Salih Kozhinhikkodan <salih@kozhinhikkodan.dev>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kozhinhikkodan-dev/artisan-playground.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kozhinhikkodan-dev/artisan-playground/issues"
+    },
+    "homepage": "https://github.com/kozhinhikkodan-dev/artisan-playground#readme"
+}
