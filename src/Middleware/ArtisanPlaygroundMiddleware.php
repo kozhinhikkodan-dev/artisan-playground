@@ -84,10 +84,10 @@ class ArtisanPlaygroundMiddleware
      */
     protected function ipInCidr(string $ip, string $cidr): bool
     {
-        list($subnet, $mask) = explode('/', $cidr);
+        [$subnet, $mask] = explode('/', $cidr);
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
-        $mask = -1 << (32 - $mask);
+        $mask = -1 << (32 - (int) $mask);
         $subnet &= $mask;
         return ($ip & $mask) == $subnet;
     }

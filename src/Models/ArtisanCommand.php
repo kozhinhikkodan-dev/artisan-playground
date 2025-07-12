@@ -5,6 +5,7 @@ namespace KozhinhikkodanDev\ArtisanPlayground\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArtisanCommand extends Model
 {
@@ -37,7 +38,7 @@ class ArtisanCommand extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('auth.providers.users.model'),'executed_by');
+        return $this->belongsTo(config('auth.providers.users.model'), 'executed_by');
     }
 
     /**

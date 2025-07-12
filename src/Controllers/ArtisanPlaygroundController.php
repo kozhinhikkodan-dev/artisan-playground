@@ -48,15 +48,15 @@ class ArtisanPlaygroundController extends Controller
      */
     public function executeCommand(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'command' => 'required|string',
             'arguments' => 'array',
             'options' => 'array',
         ]);
 
-        $commandName = $request->input('command');
-        $arguments = $request->input('arguments', []);
-        $options = $request->input('options', []);
+        $commandName = $validated['command'];
+        $arguments = $validated['arguments'] ?? [];
+        $options = $validated['options'] ?? [];
 
         // Check if command is dangerous
         if ($this->isDangerousCommand($commandName) && !Gate::allows('executeDangerous', ArtisanCommand::class)) {

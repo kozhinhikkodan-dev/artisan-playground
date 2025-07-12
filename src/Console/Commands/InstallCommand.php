@@ -34,6 +34,9 @@ class InstallCommand extends Command
         // Publish assets
         $this->publishAssets();
 
+        // Run migrations
+        $this->runMigrations();
+
         $this->info('Artisan Playground installed successfully!');
         $this->info('You can now access it at: ' . url('/artisan-playground'));
 
@@ -96,6 +99,16 @@ class InstallCommand extends Command
     {
         $this->call('vendor:publish', [
             '--tag' => 'artisan-playground',
+            '--force' => $this->option('force'),
+        ]);
+    }
+
+    /**
+     * Run package migrations.
+     */
+    protected function runMigrations(): void
+    {
+        $this->call('migrate', [
             '--force' => $this->option('force'),
         ]);
     }

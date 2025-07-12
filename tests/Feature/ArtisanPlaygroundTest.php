@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class ArtisanPlaygroundTest extends TestCase
 {

@@ -41,13 +41,12 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/js' => public_path('vendor/artisan-playground/js'),
         ], 'artisan-playground-assets');
 
-        $this->registerAssetRoutes();
         $this->registerMiddleware();
         $this->registerPolicies();
         $this->registerCommands();
     }
 
-    /**
+        /**
      * Register middleware.
      */
     protected function registerMiddleware(): void
@@ -61,44 +60,6 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
     protected function registerPolicies(): void
     {
         Gate::policy(ArtisanCommand::class, ArtisanCommandPolicy::class);
-    }
-
-    /**
-     * Register asset routes for serving CSS and JS files.
-     *
-     * These routes ensure that package assets are always available,
-     * even if the user has not published them. This allows a fresh
-     * install to "just work" out of the box. Publishing is only
-     * required for customization.
-     */
-    protected function registerAssetRoutes(): void
-    {
-        // Register asset routes with higher priority
-        Route::group(['middleware' => 'web'], function () {
-            Route::get('vendor/artisan-playground/css/{file}', function ($file) {
-                $path = __DIR__ . '/../resources/css/' . $file;
-                if (file_exists($path)) {
-                    $content = file_get_contents($path);
-                    return response($content, 200, [
-                        'Content-Type' => 'text/css',
-                        'Cache-Control' => 'public, max-age=31536000'
-                    ]);
-                }
-                abort(404);
-            })->where('file', '.*');
-
-            Route::get('vendor/artisan-playground/js/{file}', function ($file) {
-                $path = __DIR__ . '/../resources/js/' . $file;
-                if (file_exists($path)) {
-                    $content = file_get_contents($path);
-                    return response($content, 200, [
-                        'Content-Type' => 'application/javascript',
-                        'Cache-Control' => 'public, max-age=31536000'
-                    ]);
-                }
-                abort(404);
-            })->where('file', '.*');
-        });
     }
 
     /**

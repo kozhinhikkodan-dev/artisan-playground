@@ -3,25 +3,31 @@
 A beautiful, secure, and feature-rich UI for executing Laravel Artisan commands with role-based access control, theme support, and comprehensive command management.
 
 ![Artisan Playground](https://img.shields.io/badge/Laravel-10%2B-red?style=for-the-badge&logo=laravel)
-![PHP](https://img.shields.io/badge/PHP-8.1%2B-blue?style=for-the-badge&logo=php)
+![PHP](https://img.shields.io/badge/PHP-8.2%2B-blue?style=for-the-badge&logo=php)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ## ✨ Features
 
--   🎨 **Beautiful Bootstrap-based UI** with light and dark themes
--   🔐 **Role-based access control** with Spatie Laravel Permission
--   🌐 **IP-based restrictions** for enhanced security
--   👤 **Custom login credentials** or standard Laravel authentication
--   📊 **Command grouping** (Default, Custom, Dangerous, Database, Cache)
--   ⚡ **Real-time command execution** with live output
--   📝 **Command history** with detailed logging
--   🚨 **Dangerous command warnings** and confirmation
--   🔍 **Command search** and filtering
--   📱 **Responsive design** for all devices
--   🎯 **Parameter validation** for all command arguments and options
--   📈 **Execution statistics** and performance metrics
+- 🎨 **Beautiful Bootstrap-based UI** with light and dark themes
+- 🔐 **Role-based access control** with Spatie Laravel Permission
+- 🌐 **IP-based restrictions** for enhanced security
+- 👤 **Custom login credentials** or standard Laravel authentication
+- 📊 **Command grouping** (Default, Custom, Dangerous, Database, Cache)
+- ⚡ **Real-time command execution** with live output
+- 📝 **Command history** with detailed logging
+- 🚨 **Dangerous command warnings** and confirmation
+- 🔍 **Command search** and filtering
+- 📱 **Responsive design** for all devices
+- 🎯 **Parameter validation** for all command arguments and options
+- 📈 **Execution statistics** and performance metrics
 
 ## 🚀 Installation
+
+### Requirements
+
+- **PHP**: 8.2 or higher
+- **Laravel**: 10.x, 11.x, 12.x, or higher
+- **Spatie Laravel Permission**: 5.x or 6.x
 
 ### 1. Install the Package
 
@@ -89,11 +95,11 @@ Edit the published configuration file at `config/artisan-playground.php`:
 
 Commands are automatically grouped into categories:
 
--   **Default**: Standard Laravel commands
--   **Custom**: Your application's custom commands
--   **Dangerous**: Commands that can affect system stability
--   **Database**: Database-related commands
--   **Cache**: Cache management commands
+- **Default**: Standard Laravel commands
+- **Custom**: Your application's custom commands
+- **Dangerous**: Commands that can affect system stability
+- **Database**: Database-related commands
+- **Cache**: Cache management commands
 
 ### Dangerous Commands
 
@@ -139,12 +145,12 @@ The package creates three default roles:
 
 ### Permissions
 
--   `artisan-playground.view`: View the dashboard
--   `artisan-playground.execute`: Execute commands
--   `artisan-playground.execute-dangerous`: Execute dangerous commands
--   `artisan-playground.delete`: Delete command history
--   `artisan-playground.restore`: Restore deleted commands
--   `artisan-playground.force-delete`: Permanently delete commands
+- `artisan-playground.view`: View the dashboard
+- `artisan-playground.execute`: Execute commands
+- `artisan-playground.execute-dangerous`: Execute dangerous commands
+- `artisan-playground.delete`: Delete command history
+- `artisan-playground.restore`: Restore deleted commands
+- `artisan-playground.force-delete`: Permanently delete commands
 
 ### IP Restrictions
 
@@ -175,10 +181,10 @@ Visit `/artisan-playground` in your browser after installation.
 
 ### Command History
 
--   View all executed commands with details
--   Filter by command name, user, status, or type
--   Re-execute commands with the same parameters
--   View full command output in modals
+- View all executed commands with details
+- Filter by command name, user, status, or type
+- Re-execute commands with the same parameters
+- View full command output in modals
 
 ### Theme Switching
 
@@ -213,20 +219,20 @@ Click the theme toggle button in the top-right corner to switch between light an
 
 Override the default styles by publishing the assets and modifying:
 
--   `public/vendor/artisan-playground/css/app.css`
--   `public/vendor/artisan-playground/js/app.js`
+- `public/vendor/artisan-playground/css/app.css`
+- `public/vendor/artisan-playground/js/app.js`
 
 ## 📊 API Endpoints
 
 The package provides several API endpoints:
 
--   `GET /artisan-playground` - Dashboard
--   `GET /artisan-playground/command/{name}` - Command details
--   `POST /artisan-playground/execute` - Execute command
--   `GET /artisan-playground/history` - Command history
--   `GET /artisan-playground/login` - Login page
--   `POST /artisan-playground/login` - Authenticate
--   `POST /artisan-playground/logout` - Logout
+- `GET /artisan-playground` - Dashboard
+- `GET /artisan-playground/command/{name}` - Command details
+- `POST /artisan-playground/execute` - Execute command
+- `GET /artisan-playground/history` - Command history
+- `GET /artisan-playground/login` - Login page
+- `POST /artisan-playground/login` - Authenticate
+- `POST /artisan-playground/logout` - Logout
 
 ## 🧪 Testing
 
@@ -254,10 +260,10 @@ git checkout -b feature/amazing-feature
 
 ### 3. Make Your Changes
 
--   Follow PSR-12 coding standards
--   Add tests for new features
--   Update documentation as needed
--   Ensure all tests pass
+- Follow PSR-12 coding standards
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass
 
 ### 4. Commit Your Changes
 
@@ -285,28 +291,28 @@ Submit a pull request with a clear description of your changes.
 
 ### Code Style
 
--   Follow PSR-12 coding standards
--   Use meaningful variable and function names
--   Add proper PHPDoc comments
--   Keep functions small and focused
+- Follow PSR-12 coding standards
+- Use meaningful variable and function names
+- Add proper PHPDoc comments
+- Keep functions small and focused
 
 ### Testing Guidelines
 
--   Write unit tests for all new features
--   Ensure test coverage is maintained
--   Test both success and failure scenarios
--   Mock external dependencies
+- Write unit tests for all new features
+- Ensure test coverage is maintained
+- Test both success and failure scenarios
+- Mock external dependencies
 
 ## 📝 Changelog
 
 ### v1.0.0
 
--   Initial release
--   Bootstrap-based UI with theme support
--   Role-based access control
--   Command execution and history
--   IP-based restrictions
--   Custom authentication support
+- Initial release
+- Bootstrap-based UI with theme support
+- Role-based access control
+- Command execution and history
+- IP-based restrictions
+- Custom authentication support
 
 ## 📄 License
 
@@ -314,16 +320,16 @@ This package is open-sourced software licensed under the [MIT license](LICENSE).
 
 ## 🙏 Acknowledgments
 
--   [Laravel](https://laravel.com/) - The PHP framework
--   [Bootstrap](https://getbootstrap.com/) - CSS framework
--   [Font Awesome](https://fontawesome.com/) - Icons
--   [Spatie Laravel Permission](https://github.com/spatie/laravel-permission) - Permission management
+- [Laravel](https://laravel.com/) - The PHP framework
+- [Bootstrap](https://getbootstrap.com/) - CSS framework
+- [Font Awesome](https://fontawesome.com/) - Icons
+- [Spatie Laravel Permission](https://github.com/spatie/laravel-permission) - Permission management
 
 ## 📞 Support
 
--   **GitHub Issues**: [Report bugs or request features](https://github.com/kozhinhikkodan-dev/artisan-playground/issues)
--   **Documentation**: [Full documentation](https://github.com/kozhinhikkodan-dev/artisan-playground#readme)
--   **Buy me a coffee**: [Support the project](https://www.buymeacoffee.com/salihkozhinhikkodan)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/kozhinhikkodan-dev/artisan-playground/issues)
+- **Documentation**: [Full documentation](https://github.com/kozhinhikkodan-dev/artisan-playground#readme)
+- **Buy me a coffee**: [Support the project](https://www.buymeacoffee.com/salihkozhinhikkodan)
 
 ## ⭐ Star the Repository
 
