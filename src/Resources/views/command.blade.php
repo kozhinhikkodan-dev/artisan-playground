@@ -511,14 +511,14 @@
                                    name="arguments[{{ $argument['name'] }}]"
                                    placeholder="{{ $argument['description'] }}"
                                    @if($argument['required']) required @endif
-                                   @if($argument['default'] !== null) value="{{ $argument['default'] }}" @endif>
+                                   @if($argument['default'] !== null) value="{{ is_string($argument['default']) ? $argument['default'] : json_encode($argument['default']) }}" @endif>
                             <div class="form-text">
                                 {{ $argument['description'] }}
                                 @if($argument['is_array'])
                                 <span class="badge badge-info ms-1">Array</span>
                                 @endif
                                 @if($argument['default'] !== null)
-                                <span class="badge badge-secondary ms-1">Default: {{ $argument['default'] }}</span>
+                                <span class="badge badge-secondary ms-1">Default: {{ is_string($argument['default']) ? $argument['default'] : json_encode($argument['default']) }}</span>
                                 @endif
                             </div>
                         </div>
@@ -559,7 +559,7 @@
                                                id="opt_{{ $option['name'] }}_value" 
                                                name="options[{{ $option['name'] }}_value]"
                                                placeholder="Value for {{ $option['name'] }}"
-                                               @if($option['default'] !== null) value="{{ $option['default'] }}" @endif>
+                                               @if($option['default'] !== null) value="{{ is_string($option['default']) ? $option['default'] : json_encode($option['default']) }}" @endif>
                                     </div>
                                 </div>
                                 @else
@@ -584,7 +584,7 @@
                                 <span class="badge badge-info ms-1">Array</span>
                                 @endif
                                 @if($option['default'] !== null)
-                                <span class="badge badge-secondary ms-1">Default: {{ $option['default'] }}</span>
+                                <span class="badge badge-secondary ms-1">Default: {{ is_string($option['default']) ? $option['default'] : json_encode($option['default']) }}</span>
                                 @endif
                             </div>
                         </div>
