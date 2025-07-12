@@ -25,6 +25,7 @@ Route::prefix($prefix)->namespace($namespace)->group(function () use ($middlewar
         // Command routes
         Route::get('command/{commandName}', [ArtisanPlaygroundController::class, 'showCommand'])->name('artisan-playground.command');
         Route::post('execute', [ArtisanPlaygroundController::class, 'executeCommand'])->name('artisan-playground.execute');
+        Route::get('command-details/{id}', [ArtisanPlaygroundController::class, 'getCommandDetailsById'])->name('artisan-playground.command.details');
 
         // History
         Route::get('history', [ArtisanPlaygroundController::class, 'history'])->name('artisan-playground.history');

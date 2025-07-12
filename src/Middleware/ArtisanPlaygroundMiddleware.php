@@ -22,14 +22,17 @@ class ArtisanPlaygroundMiddleware
             abort(403, 'Access denied from this IP address.');
         }
 
-        // Check if user is authenticated
-        if (!Auth::check()) {
-            return redirect()->route('artisan-playground.login');
-        }
+        // Check if authentication is enabled
+        if ($config['auth']['enabled'] ?? true) {
+            // Check if user is authenticated (either standard Laravel auth or custom credentials)
+            if (!Auth::check() && !session('artisan_playground_authenticated')) {
+                return redirect()->route('artisan-playground.login');
+            }
 
-        // Check if user has permission
-        if (!$this->hasPermission(Auth::user(), $config)) {
-            abort(403, 'You do not have permission to access Artisan Playground.');
+            // Check if user has permission
+            if (Auth::check() && !$this->hasPermission(Auth::user(), $config)) {
+                abort(403, 'You do not have permission to access Artisan Playground.');
+            }
         }
 
         return $next($request);
@@ -40,7 +43,7 @@ class ArtisanPlaygroundMiddleware
      */
     protected function isIpAllowed(Request $request, array $config): bool
     {
-        $allowedIps = $config['allowed_ips'] ?? [];
+        $allowedIps = $config['access_control']['allowed_ips'] ?? [];
 
         if (empty($allowedIps)) {
             return true; // Allow all IPs if none specified
@@ -94,23 +97,28 @@ class ArtisanPlaygroundMiddleware
      */
     protected function hasPermission($user, array $config): bool
     {
+        // If auth is disabled, allow access
+        if (!($config['auth']['enabled'] ?? true)) {
+            return true;
+        }
+
         // Check specific roles
-        if (!empty($config['allowed_roles'])) {
-            if (!$user->hasAnyRole($config['allowed_roles'])) {
+        if (!empty($config['access_control']['allowed_roles'])) {
+            if (!$user->hasAnyRole($config['access_control']['allowed_roles'])) {
                 return false;
             }
         }
 
         // Check specific permissions
-        if (!empty($config['required_permissions'])) {
-            if (!$user->hasAnyPermission($config['required_permissions'])) {
+        if (!empty($config['access_control']['required_permissions'])) {
+            if (!$user->hasAnyPermission($config['access_control']['required_permissions'])) {
                 return false;
             }
         }
 
         // Check specific users
-        if (!empty($config['allowed_users'])) {
-            if (!in_array($user->id, $config['allowed_users'])) {
+        if (!empty($config['access_control']['allowed_users'])) {
+            if (!in_array($user->id, $config['access_control']['allowed_users'])) {
                 return false;
             }
         }

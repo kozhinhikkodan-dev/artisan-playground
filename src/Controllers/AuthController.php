@@ -14,11 +14,21 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
+        $config = config('artisan-playground');
+
+        // If authentication is disabled, redirect to dashboard
+        if (!($config['auth']['enabled'] ?? true)) {
+            return redirect()->route('artisan-playground.dashboard');
+        }
+
         if (Auth::check()) {
             return redirect()->route('artisan-playground.dashboard');
         }
 
-        return view('artisan-playground::auth.login');
+        $authConfig = $config['auth'];
+        $useCustomCredentials = $authConfig['custom_credentials']['enabled'] ?? false;
+
+        return view('artisan-playground::auth.login', compact('useCustomCredentials'));
     }
 
     /**
@@ -26,10 +36,17 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $config = config('artisan-playground.auth');
+        $config = config('artisan-playground');
 
-        if ($config['custom_credentials']['enabled']) {
-            return $this->handleCustomLogin($request, $config);
+        // If authentication is disabled, redirect to dashboard
+        if (!($config['auth']['enabled'] ?? true)) {
+            return redirect()->route('artisan-playground.dashboard');
+        }
+
+        $authConfig = $config['auth'];
+
+        if ($authConfig['custom_credentials']['enabled']) {
+            return $this->handleCustomLogin($request, $authConfig);
         }
 
         return $this->handleStandardLogin($request);
@@ -41,21 +58,21 @@ class AuthController extends Controller
     protected function handleCustomLogin(Request $request, array $config)
     {
         $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
         $username = $config['custom_credentials']['username'];
         $password = $config['custom_credentials']['password'];
 
-        if ($request->username === $username && $request->password === $password) {
+        if ($request->email === $username && $request->password === $password) {
             // Create a temporary session for custom login
             session(['artisan_playground_authenticated' => true]);
             session([
                 'artisan_playground_user' => [
                     'id' => 'custom',
                     'name' => $username,
-                    'email' => $username . '@artisan-playground.local',
+                    'email' => $username,
                 ]
             ]);
 
@@ -63,8 +80,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->withInput($request->only('username'));
+            'email' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('email'));
     }
 
     /**

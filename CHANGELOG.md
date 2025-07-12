@@ -50,6 +50,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2024-12-19
+
+### Fixed
+
+-   **Authentication Issues**: Fixed custom credentials authentication not working properly
+-   **Login Form**: Dynamic form labels (Username/Email) based on authentication type
+-   **Session Management**: Proper handling of custom user sessions
+-   **Middleware**: Updated to support both standard Laravel auth and custom credentials
+-   **Command History**: Fixed user tracking for custom authentication sessions
+-   **Search Functionality**: Fixed search clear button alignment and functionality
+-   **UI Improvements**: Enhanced search bar with Cmd+K/Ctrl+K shortcuts
+-   **Login Header**: Fixed logo and text visibility issues in login page
+-   **Password Toggle**: Added proper styling and background for password visibility toggle
+-   **View Details**: Fixed 404 error when viewing command execution details
+-   **Route Conflicts**: Resolved route conflicts between command details and command execution
+
+### Enhanced
+
+-   **Search Experience**: Improved search with smooth animations and better visual feedback
+-   **Login UX**: Better form validation and error handling for custom credentials
+-   **Responsive Design**: Enhanced mobile responsiveness for all components
+-   **Theme Support**: Better dark/light theme compatibility across all views
+
+### Technical
+
+-   **Code Quality**: Improved error handling and validation
+-   **Performance**: Optimized asset loading and caching
+-   **Security**: Enhanced session management for custom authentication
+
+---
+
 ## [Unreleased]
 
 ### Planned

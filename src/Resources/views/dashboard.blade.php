@@ -20,10 +20,10 @@
         <div class="container-fluid px-4 py-3">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="logo">
+                    <a href="{{ route('artisan-playground.dashboard') }}" class="logo text-decoration-none">
                         <i class="fas fa-terminal me-2"></i>
                         Artisan Playground
-                    </div>
+                    </a>
                 </div>
                 
                 <div class="d-flex align-items-center gap-3">
@@ -31,6 +31,7 @@
                         <i class="fas fa-history me-1"></i>
                         History
                     </a>
+                    @if(config('artisan-playground.auth.enabled'))
                     <form action="{{ route('artisan-playground.logout') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -38,6 +39,7 @@
                             Logout
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -51,11 +53,14 @@
             <input type="text" 
                    id="commandSearch" 
                    class="search-input" 
-                   placeholder="Search commands by name or description..."
+                   placeholder="Search commands by name or description... (⌘K)"
                    autocomplete="off">
             <button type="button" class="search-clear" id="searchClear" style="display: none;">
                 <i class="fas fa-times"></i>
             </button>
+            <div class="search-shortcut" id="searchShortcut">
+                <kbd id="cmdKey">⌘</kbd><kbd>K</kbd>
+            </div>
         </div>
 
         <!-- Statistics -->
@@ -95,7 +100,27 @@
 
         <!-- Command Groups -->
         @if(count($commands) > 0)
-            @foreach($commands as $groupKey => $groupCommands)
+            @php
+                // Define the order we want to display groups
+                $groupOrder = ['custom', 'dangerous', 'database', 'cache', 'default'];
+                $orderedCommands = [];
+                
+                // Reorder commands based on our preferred order
+                foreach ($groupOrder as $groupKey) {
+                    if (isset($commands[$groupKey])) {
+                        $orderedCommands[$groupKey] = $commands[$groupKey];
+                    }
+                }
+                
+                // Add any remaining groups that weren't in our order
+                foreach ($commands as $groupKey => $groupCommands) {
+                    if (!isset($orderedCommands[$groupKey])) {
+                        $orderedCommands[$groupKey] = $groupCommands;
+                    }
+                }
+            @endphp
+            
+            @foreach($orderedCommands as $groupKey => $groupCommands)
             <div class="command-section" id="{{ $groupKey }}">
                 <div class="section-header">
                     <h2 class="section-title">
@@ -230,6 +255,7 @@
             const searchTerm = document.getElementById('commandSearch').value.toLowerCase();
             const commandItems = document.querySelectorAll('.command-item');
             const searchClear = document.getElementById('searchClear');
+            const searchShortcut = document.getElementById('searchShortcut');
             
             let visibleCount = 0;
             
@@ -245,15 +271,23 @@
                 }
             });
             
-            // Show/hide clear button
-            searchClear.style.display = searchTerm ? 'block' : 'none';
+            // Show/hide clear button and shortcut
+            if (searchTerm) {
+                searchClear.style.display = 'flex';
+                searchShortcut.style.display = 'none';
+            } else {
+                searchClear.style.display = 'none';
+                searchShortcut.style.display = 'flex';
+            }
             
             // Update command counts
             updateCommandCounts();
         }
 
         function clearSearch() {
-            document.getElementById('commandSearch').value = '';
+            const searchInput = document.getElementById('commandSearch');
+            searchInput.value = '';
+            searchInput.focus();
             filterCommands();
         }
 
@@ -272,13 +306,45 @@
             });
         }
 
+        // Cmd+K / Ctrl+K search functionality
+        function handleSearchShortcut(e) {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const cmdOrCtrl = isMac ? e.metaKey : e.ctrlKey;
+            
+            if (cmdOrCtrl && e.key === 'k') {
+                e.preventDefault();
+                const searchInput = document.getElementById('commandSearch');
+                searchInput.focus();
+                searchInput.select();
+            }
+        }
+
+        // Update shortcut display based on platform
+        function updateShortcutDisplay() {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const cmdKey = document.getElementById('cmdKey');
+            const searchInput = document.getElementById('commandSearch');
+            
+            if (isMac) {
+                cmdKey.textContent = '⌘';
+                searchInput.placeholder = 'Search commands by name or description... (⌘K)';
+            } else {
+                cmdKey.textContent = 'Ctrl';
+                searchInput.placeholder = 'Search commands by name or description... (Ctrl+K)';
+            }
+        }
+
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             initializeTheme();
+            updateShortcutDisplay();
             
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
             document.getElementById('commandSearch').addEventListener('input', filterCommands);
             document.getElementById('searchClear').addEventListener('click', clearSearch);
+            
+            // Global keyboard shortcut for search
+            document.addEventListener('keydown', handleSearchShortcut);
             
             // Focus search on load
             document.getElementById('commandSearch').focus();

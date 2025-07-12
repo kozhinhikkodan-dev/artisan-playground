@@ -21,10 +21,10 @@
         <div class="container-fluid px-4 py-3">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="logo">
+                    <a href="{{ route('artisan-playground.dashboard') }}" class="logo text-decoration-none">
                         <i class="fas fa-terminal me-2"></i>
                         Artisan Playground
-                    </div>
+                    </a>
                 </div>
                 
                 <div class="d-flex align-items-center gap-3">
@@ -32,6 +32,7 @@
                         <i class="fas fa-arrow-left me-1"></i>
                         Back to Dashboard
                     </a>
+                    @if(config('artisan-playground.auth.enabled'))
                     <form action="{{ route('artisan-playground.logout') }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger btn-sm">
@@ -39,6 +40,7 @@
                             Logout
                         </button>
                     </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -405,7 +407,7 @@
 
         function showDetails(commandId) {
             // Load command details via AJAX
-            fetch(`/artisan-playground/command/${commandId}/details`)
+            fetch(`/artisan-playground/command-details/${commandId}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('detailsContent').innerHTML = data.html;

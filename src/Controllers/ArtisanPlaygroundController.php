@@ -142,6 +142,13 @@ class ArtisanPlaygroundController extends Controller
             ];
         }
 
+        // Sort commands within each group alphabetically
+        foreach ($commands as $group => &$groupCommands) {
+            usort($groupCommands, function ($a, $b) {
+                return strcmp($a['name'], $b['name']);
+            });
+        }
+
         return $commands;
     }
 
@@ -252,6 +259,15 @@ class ArtisanPlaygroundController extends Controller
      */
     protected function saveCommandExecution(string $commandName, array $arguments, array $options, string $output, float $executionTime): void
     {
+        // Get user ID - handle both standard Laravel auth and custom credentials
+        $executedBy = null;
+        if (Auth::check()) {
+            $executedBy = Auth::id();
+        } elseif (session('artisan_playground_authenticated')) {
+            // For custom credentials, we'll use a special user ID or create a placeholder
+            $executedBy = 1; // Use a default user ID for custom auth
+        }
+
         ArtisanCommand::create([
             'command_name' => $commandName,
             'arguments' => $arguments,
@@ -259,7 +275,7 @@ class ArtisanPlaygroundController extends Controller
             'output' => substr($output, 0, config('artisan-playground.execution.max_output_length')),
             'exit_code' => 0,
             'execution_time' => $executionTime,
-            'executed_by' => Auth::id(),
+            'executed_by' => $executedBy,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
             'is_dangerous' => $this->isDangerousCommand($commandName),
@@ -283,9 +299,21 @@ class ArtisanPlaygroundController extends Controller
      */
     protected function getStats(): array
     {
+        // Get all available Artisan commands
+        $allCommands = Artisan::all();
+        $totalCommands = count($allCommands);
+
+        // Count dangerous commands from available commands
+        $dangerousCommandsCount = 0;
+        foreach ($allCommands as $name => $command) {
+            if ($this->isDangerousCommand($name)) {
+                $dangerousCommandsCount++;
+            }
+        }
+
         return [
-            'total_commands' => ArtisanCommand::count(),
-            'dangerous_commands' => ArtisanCommand::dangerous()->count(),
+            'total_commands' => $totalCommands,
+            'dangerous_commands' => $dangerousCommandsCount,
             'today_commands' => ArtisanCommand::whereDate('created_at', today())->count(),
             'avg_execution_time' => ArtisanCommand::avg('execution_time'),
         ];
@@ -309,6 +337,11 @@ class ArtisanPlaygroundController extends Controller
             return 'dangerous';
         }
 
+        // Check for custom commands first (project-specific commands)
+        if ($this->isCustomCommand($commandName)) {
+            return 'custom';
+        }
+
         // Check for database commands
         if (str_starts_with($commandName, 'migrate') || str_starts_with($commandName, 'db:')) {
             return 'database';
@@ -319,17 +352,72 @@ class ArtisanPlaygroundController extends Controller
             return 'cache';
         }
 
-        // Check for custom commands (commands that don't start with common prefixes)
-        $customPrefixes = ['make:', 'list', 'help', 'tinker', 'serve'];
-        $isCustom = true;
+        // Check for default Laravel commands
+        $defaultPrefixes = ['make:', 'list', 'help', 'tinker', 'serve', 'about', 'clear-compiled', 'completion', 'docs', 'down', 'env', 'inspire', 'optimize', 'pail', 'test', 'up'];
+        $isDefault = false;
 
-        foreach ($customPrefixes as $prefix) {
-            if (str_starts_with($commandName, $prefix)) {
-                $isCustom = false;
+        foreach ($defaultPrefixes as $prefix) {
+            if (str_starts_with($commandName, $prefix) || $commandName === $prefix) {
+                $isDefault = true;
                 break;
             }
         }
 
-        return $isCustom ? 'custom' : 'default';
+        return $isDefault ? 'default' : 'custom';
+    }
+
+    /**
+     * Check if command is custom (project-specific).
+     */
+    protected function isCustomCommand(string $commandName): bool
+    {
+        // Commands that are specific to this project or packages
+        $customCommands = [
+            'artisan-playground:install', // Our package command
+            // Add more project-specific commands here
+        ];
+
+        // Check if it's in our custom commands list
+        if (in_array($commandName, $customCommands)) {
+            return true;
+        }
+
+        // Check if it's a package command (contains package name or vendor prefix)
+        if (
+            str_contains($commandName, ':') && !in_array($commandName, [
+                'migrate:',
+                'db:',
+                'cache:',
+                'config:',
+                'view:',
+                'route:',
+                'make:',
+                'auth:',
+                'queue:',
+                'schedule:',
+                'storage:',
+                'vendor:'
+            ])
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get command execution details by ID.
+     */
+    public function getCommandDetailsById($id)
+    {
+        $command = ArtisanCommand::with('user')->find($id);
+
+        if (!$command) {
+            return response()->json(['error' => 'Command not found'], 404);
+        }
+
+        $html = view('artisan-playground::partials.command-details', compact('command'))->render();
+
+        return response()->json(['html' => $html]);
     }
 }

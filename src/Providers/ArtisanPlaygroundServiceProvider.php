@@ -17,7 +17,7 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/artisan-playground.php',
+            __DIR__ . '/../config/artisan-playground.php',
             'artisan-playground'
         );
     }
@@ -27,18 +27,18 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'artisan-playground');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'artisan-playground');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
         $this->publishes([
-            __DIR__ . '/../Config/artisan-playground.php' => config_path('artisan-playground.php'),
-            __DIR__ . '/../Resources/views' => resource_path('views/vendor/artisan-playground'),
+            __DIR__ . '/../config/artisan-playground.php' => config_path('artisan-playground.php'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/artisan-playground'),
         ], 'artisan-playground');
 
         $this->publishes([
-            __DIR__ . '/../Resources/css' => public_path('vendor/artisan-playground/css'),
-            __DIR__ . '/../Resources/js' => public_path('vendor/artisan-playground/js'),
+            __DIR__ . '/../resources/css' => public_path('vendor/artisan-playground/css'),
+            __DIR__ . '/../resources/js' => public_path('vendor/artisan-playground/js'),
         ], 'artisan-playground-assets');
 
         $this->registerMiddleware();

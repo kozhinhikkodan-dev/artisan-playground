@@ -78,6 +78,12 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: all 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 /* Page Header */
@@ -132,7 +138,7 @@ body {
     border-radius: var(--radius-lg);
     padding: 1rem 1rem 1rem 3rem;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
 }
 
@@ -141,6 +147,7 @@ body {
     border-color: var(--primary);
     background: white;
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    transform: scale(1.02);
 }
 
 [data-bs-theme="dark"] .search-input {
@@ -159,6 +166,13 @@ body {
     transform: translateY(-50%);
     color: var(--gray-400);
     z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.search-input:focus ~ .search-icon {
+    color: var(--primary);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .search-clear {
@@ -170,14 +184,75 @@ body {
     border: none;
     color: var(--gray-400);
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0.5rem;
     border-radius: 50%;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
 }
 
 .search-clear:hover {
     background: var(--gray-200);
     color: var(--gray-600);
+    width: 2.2rem;
+    height: 2.2rem;
+    right: 0.9rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-clear:active {
+    width: 1.9rem;
+    height: 1.9rem;
+    right: 1.05rem;
+    transition: all 0.1s ease;
+}
+
+.search-shortcut {
+    position: absolute;
+    right: 3.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0.6;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 15;
+}
+
+.search-input:focus ~ .search-shortcut,
+.search-input:not(:placeholder-shown) ~ .search-shortcut {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.9);
+}
+
+.search-input:focus ~ .search-clear,
+.search-input:not(:placeholder-shown) ~ .search-clear {
+    width: 2.1rem;
+    height: 2.1rem;
+    right: 0.95rem;
+}
+
+.search-shortcut kbd {
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    color: var(--gray-600);
+    line-height: 1;
+}
+
+[data-bs-theme="dark"] .search-shortcut kbd {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+    color: var(--gray-300);
 }
 
 /* Content Cards */
@@ -920,12 +995,36 @@ body {
     opacity: 0.3;
 }
 
+.login-header .logo {
+    font-weight: 800 !important;
+    font-size: 2rem !important;
+    color: white !important;
+    margin-bottom: 1rem !important;
+    position: relative;
+    z-index: 1;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
+}
+
+.login-header .logo i {
+    font-size: 2.25rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.9) !important;
+}
+
 .login-subtitle {
     margin: 0;
     opacity: 0.9;
     font-size: 1rem;
     position: relative;
     z-index: 1;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .login-form {
@@ -948,6 +1047,31 @@ body {
     background: var(--gray-600);
     border-color: var(--gray-500);
     color: var(--gray-300);
+}
+
+/* Password toggle button styling */
+#togglePassword {
+    background: var(--gray-100) !important;
+    border: 1px solid var(--gray-300) !important;
+    border-left: none !important;
+    color: var(--gray-600) !important;
+    transition: all 0.2s ease;
+}
+
+#togglePassword:hover {
+    background: var(--gray-200) !important;
+    color: var(--gray-700) !important;
+}
+
+[data-bs-theme="dark"] #togglePassword {
+    background: var(--gray-600) !important;
+    border-color: var(--gray-500) !important;
+    color: var(--gray-300) !important;
+}
+
+[data-bs-theme="dark"] #togglePassword:hover {
+    background: var(--gray-500) !important;
+    color: var(--gray-200) !important;
 }
 
 .form-check {
@@ -1014,12 +1138,16 @@ body {
         padding: 2rem 1.5rem 1.5rem;
     }
     
-    .login-form {
-        padding: 1.5rem;
+    .login-header .logo {
+        font-size: 1.75rem !important;
     }
     
-    .logo {
-        font-size: 1.75rem;
+    .login-header .logo i {
+        font-size: 2rem !important;
+    }
+    
+    .login-form {
+        padding: 1.5rem;
     }
 }
 
