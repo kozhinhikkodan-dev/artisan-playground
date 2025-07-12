@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Schema;
 use KozhinhikkodanDev\ArtisanPlayground\Models\ArtisanCommand;
 
 class ArtisanPlaygroundController extends Controller
@@ -270,13 +268,7 @@ class ArtisanPlaygroundController extends Controller
             $executedBy = null;
         }
 
-        // Check if users table exists and user exists before setting executed_by
-        if ($executedBy !== null && Schema::hasTable('users')) {
-            $userExists = DB::table('users')->where('id', $executedBy)->exists();
-            if (!$userExists) {
-                $executedBy = null;
-            }
-        }
+
 
         ArtisanCommand::create([
             'command_name' => $commandName,
