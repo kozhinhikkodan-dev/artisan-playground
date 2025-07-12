@@ -81,6 +81,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.2] - 2024-12-19
+
+### Fixed
+
+-   **Asset Loading**: Fixed CSS and JavaScript not loading correctly in fresh Laravel installations
+-   **Development Server**: Resolved asset serving issues with `php artisan serve`
+-   **Fresh Install**: Package now works out of the box without requiring asset publishing
+-   **Asset Routes**: Added internal asset serving routes for seamless development experience
+
+### Enhanced
+
+-   **Zero Configuration**: Fresh installs work immediately without any additional setup
+-   **Asset Management**: Assets are automatically served from package internals
+-   **Customization**: Publishing assets is only required for customization, not for basic functionality
+-   **Developer Experience**: Improved development workflow with automatic asset serving
+
+### Technical
+
+-   **Service Provider**: Added asset route registration for CSS and JS files
+-   **Route Management**: Internal asset routes ensure compatibility across all environments
+-   **Performance**: Optimized asset serving with proper MIME types and caching headers
+
+---
+
 ## [Unreleased]
 
 ### Planned

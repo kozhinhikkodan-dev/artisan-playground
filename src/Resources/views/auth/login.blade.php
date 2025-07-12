@@ -129,62 +129,8 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-        // Theme switching
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            html.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('artisan_playground_theme', newTheme);
-            
-            const icon = document.getElementById('themeIcon');
-            icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
-
-        // Initialize theme
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('artisan_playground_theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-bs-theme', savedTheme);
-                const icon = document.getElementById('themeIcon');
-                icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            }
-        }
-
-        // Password toggle
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const passwordIcon = document.getElementById('passwordIcon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordIcon.className = 'fas fa-eye-slash';
-            } else {
-                passwordInput.type = 'password';
-                passwordIcon.className = 'fas fa-eye';
-            }
-        }
-
-        // Form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<span class="spinner me-2"></span>Signing In...';
-        });
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeTheme();
-            
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            document.getElementById('togglePassword').addEventListener('click', togglePassword);
-            
-            // Focus on email field
-            document.getElementById('email').focus();
-        });
-    </script>
+    <!-- Artisan Playground JS -->
+    <script src="{{ asset('vendor/artisan-playground/js/app.js') }}"></script>
 </body>
 </html> 
 </html> 
