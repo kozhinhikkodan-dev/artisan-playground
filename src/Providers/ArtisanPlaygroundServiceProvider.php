@@ -5,6 +5,8 @@ namespace KozhinhikkodanDev\ArtisanPlayground\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response;
 use KozhinhikkodanDev\ArtisanPlayground\Middleware\ArtisanPlaygroundMiddleware;
 use KozhinhikkodanDev\ArtisanPlayground\Models\ArtisanCommand;
 use KozhinhikkodanDev\ArtisanPlayground\Policies\ArtisanCommandPolicy;
@@ -44,9 +46,10 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->registerPolicies();
         $this->registerCommands();
+        $this->registerAssetRoutes();
     }
 
-        /**
+    /**
      * Register middleware.
      */
     protected function registerMiddleware(): void
@@ -72,5 +75,41 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
                 \KozhinhikkodanDev\ArtisanPlayground\Console\Commands\InstallCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register asset serving routes.
+     */
+    protected function registerAssetRoutes(): void
+    {
+        Route::get('artisan-playground/assets/{type}/{file}', function ($type, $file) {
+            $assetPath = __DIR__ . "/../resources/{$type}/{$file}";
+
+            if (!File::exists($assetPath)) {
+                abort(404);
+            }
+
+            $content = File::get($assetPath);
+            $mimeType = $this->getMimeType($file);
+
+            return response($content, 200, [
+                'Content-Type' => $mimeType,
+                'Cache-Control' => 'public, max-age=31536000',
+            ]);
+        })->where('type', 'css|js')->where('file', '.*');
+    }
+
+    /**
+     * Get MIME type for file.
+     */
+    protected function getMimeType(string $file): string
+    {
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+
+        return match ($extension) {
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            default => 'text/plain',
+        };
     }
 }
