@@ -61,6 +61,5 @@
         "optimize-autoloader": true
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "version": "1.1.2"
+    "prefer-stable": true
 }
