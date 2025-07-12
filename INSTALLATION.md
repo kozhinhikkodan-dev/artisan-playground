@@ -5,7 +5,7 @@ This guide will help you install and configure Artisan Playground in your Larave
 ## Prerequisites
 
 -   PHP 8.1 or higher
--   Laravel 10, 11, or 12
+-   Laravel 10 or 11
 -   Composer
 -   Spatie Laravel Permission package (will be installed automatically)
 

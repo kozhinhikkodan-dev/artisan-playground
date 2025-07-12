@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
 
 -   OS: [e.g. macOS, Windows, Linux]
 -   PHP Version: [e.g. 8.1, 8.2, 8.3]
--   Laravel Version: [e.g. 10.x, 11.x, 12.x]
+-   Laravel Version: [e.g. 10.x, 11.x]
 -   Artisan Playground Version: [e.g. 1.0.0]
 -   Browser: [e.g. Chrome, Firefox, Safari]
 

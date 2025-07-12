@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Technical
 
--   Laravel 10, 11, and 12 support
+-   Laravel 10 and 11 support
 -   PHP 8.1+ compatibility
 -   PSR-12 coding standards
 -   Comprehensive test coverage
