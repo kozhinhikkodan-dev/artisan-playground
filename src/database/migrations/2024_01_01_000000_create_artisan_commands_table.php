@@ -31,7 +31,10 @@ return new class extends Migration {
             $table->index(['is_dangerous']);
             $table->index(['command_group']);
 
-            $table->foreign('executed_by')->references('id')->on('users')->onDelete('set null');
+            // Only add foreign key if users table exists
+            if (Schema::hasTable('users')) {
+                $table->foreign('executed_by')->references('id')->on('users')->onDelete('set null');
+            }
         });
     }
 

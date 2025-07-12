@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use KozhinhikkodanDev\ArtisanPlayground\Models\ArtisanCommand;
 
 class ArtisanPlaygroundController extends Controller
@@ -264,8 +266,16 @@ class ArtisanPlaygroundController extends Controller
         if (Auth::check()) {
             $executedBy = Auth::id();
         } elseif (session('artisan_playground_authenticated')) {
-            // For custom credentials, we'll use a special user ID or create a placeholder
-            $executedBy = 1; // Use a default user ID for custom auth
+            // For custom credentials, we'll use null since we can't guarantee user exists
+            $executedBy = null;
+        }
+
+        // Check if users table exists and user exists before setting executed_by
+        if ($executedBy !== null && Schema::hasTable('users')) {
+            $userExists = DB::table('users')->where('id', $executedBy)->exists();
+            if (!$userExists) {
+                $executedBy = null;
+            }
         }
 
         ArtisanCommand::create([

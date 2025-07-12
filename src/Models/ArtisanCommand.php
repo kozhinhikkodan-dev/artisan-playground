@@ -38,7 +38,15 @@ class ArtisanCommand extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('auth.providers.users.model'), 'executed_by');
+        $userModel = config('auth.providers.users.model', \App\Models\User::class);
+        
+        // Check if the user model class exists
+        if (!class_exists($userModel)) {
+            // Return a dummy relationship that won't fail
+            return $this->belongsTo(\App\Models\User::class, 'executed_by')->whereRaw('1 = 0');
+        }
+        
+        return $this->belongsTo($userModel, 'executed_by');
     }
 
     /**
