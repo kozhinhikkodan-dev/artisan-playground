@@ -73,21 +73,32 @@ class ArtisanPlaygroundServiceProvider extends ServiceProvider
      */
     protected function registerAssetRoutes(): void
     {
-        \Illuminate\Support\Facades\Route::get('vendor/artisan-playground/css/{file}', function ($file) {
-            $path = __DIR__ . '/../resources/css/' . $file;
-            if (file_exists($path)) {
-                return response()->file($path, ['Content-Type' => 'text/css']);
-            }
-            abort(404);
-        })->where('file', '.*');
+        // Register asset routes with higher priority
+        Route::group(['middleware' => 'web'], function () {
+            Route::get('vendor/artisan-playground/css/{file}', function ($file) {
+                $path = __DIR__ . '/../resources/css/' . $file;
+                if (file_exists($path)) {
+                    $content = file_get_contents($path);
+                    return response($content, 200, [
+                        'Content-Type' => 'text/css',
+                        'Cache-Control' => 'public, max-age=31536000'
+                    ]);
+                }
+                abort(404);
+            })->where('file', '.*');
 
-        \Illuminate\Support\Facades\Route::get('vendor/artisan-playground/js/{file}', function ($file) {
-            $path = __DIR__ . '/../resources/js/' . $file;
-            if (file_exists($path)) {
-                return response()->file($path, ['Content-Type' => 'application/javascript']);
-            }
-            abort(404);
-        })->where('file', '.*');
+            Route::get('vendor/artisan-playground/js/{file}', function ($file) {
+                $path = __DIR__ . '/../resources/js/' . $file;
+                if (file_exists($path)) {
+                    $content = file_get_contents($path);
+                    return response($content, 200, [
+                        'Content-Type' => 'application/javascript',
+                        'Cache-Control' => 'public, max-age=31536000'
+                    ]);
+                }
+                abort(404);
+            })->where('file', '.*');
+        });
     }
 
     /**

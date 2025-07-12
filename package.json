@@ -1,6 +1,6 @@
 {
     "name": "artisan-playground",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A beautiful UI for executing Laravel Artisan commands",
     "private": true,
     "scripts": {

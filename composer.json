@@ -1,6 +1,6 @@
 {
   "name": "kozhinhikkodan-dev/artisan-playground",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A beautiful, secure, and feature-rich UI for executing Laravel Artisan commands with role-based access control, theme support, and comprehensive command management",
   "type": "library",
   "license": "MIT",
