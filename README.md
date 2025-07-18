@@ -8,6 +8,8 @@ A beautiful, secure, and feature-rich UI for executing Laravel Artisan commands 
 [![GitHub Stars](https://img.shields.io/github/stars/kozhinhikkodan-dev/artisan-playground?style=for-the-badge&logo=github)](https://github.com/kozhinhikkodan-dev/artisan-playground/stargazers)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/kozhinhikkodan-dev/artisan-playground?style=for-the-badge&logo=packagist)](https://packagist.org/packages/kozhinhikkodan-dev/artisan-playground)
 [![Packagist Stars](https://img.shields.io/packagist/stars/kozhinhikkodan-dev/artisan-playground?style=for-the-badge&logo=packagist)](https://packagist.org/packages/kozhinhikkodan-dev/artisan-playground)
+[![Latest Version](https://img.shields.io/packagist/v/kozhinhikkodan-dev/artisan-playground?style=for-the-badge)](https://packagist.org/packages/kozhinhikkodan-dev/artisan-playground)
+
 
 ## ✨ Features
 
